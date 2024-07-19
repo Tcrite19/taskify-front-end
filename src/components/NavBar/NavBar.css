@@ -1,4 +1,21 @@
 
+:root {
+    --bg-color: #fff;
+    --second-bg-color: #f8f8f8;
+    --text-color: #333;
+    --link-on-hover-color: #5c5c5c;
+    --main-color: #596dde;
+    --button-color: #4ede72;
+    --button-border-color: #4ede72;
+  }
+
 main {
     margin: 16px;
+}
+
+
+.logo {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--main-color);
 }

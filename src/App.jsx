@@ -1,59 +1,52 @@
 import { useState } from "react";
 
 import NavBar from "./components/NavBar/NavBar.jsx";
-import Homepage from "./components/Homepage.jsx";
+import Homepage from "./components/Homepage/Homepage.jsx";
 import { Route, Routes } from "react-router-dom";
 import TaskList from "./components/TaskList/TaskList.jsx";
-import TaskDetails from "./components/TaskDetails/TaskDetails.jsx";
+import TaskCard from "./components/TaskCard/TaskCard.jsx";
 import SearchForm from "./components/SearchForm/SearchForm.jsx";
+import data from "../data/data.json";
 
+const tasks = data;
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-const initialState = [
-  {_id: 1, name: "Home Repairs", description: "Home repairs", booked: false},
-  {_id: 2, name: "Yard Work", description: "Yard Work", booked: false},
-  {_id: 3, name: "Painting", description: "Painting", booked: false},
-  {_id: 4, name: "Cleaning", description: "Cleaning", booked: false},
-  {_id: 5, name: "Junk Removal", description: "Junk Removal", booked: false},
-  {_id: 6, name: "Furniture Assembly", description: "Furniture Assembly", booked: false},
-  {_id: 7, name: "Moving", description: "Moving", booked: false},
-  {_id: 8, name: "Electrical Work", description: "Electrical Work", booked: false},
-  {_id: 9, name: "Plumbing Help", description: "Plumbing Help", booked: false},
-  {_id: 10, name: "Locksmith Services", description: "Locksmith Services", booked: false},
-  {_id: 11, name: "Car Wash", description: "Car Wash", booked: false},
-  {_id: 12, name: "Organization", description: "Organization", booked: false},
-  {_id: 13, name: "Errands", description: "Errands", booked: false},
-  {_id: 14, name: "General Mounting", description: "General Mounting", booked: false},
-  {_id: 15, name: "Car Repair", description: "Car Repair", booked: false},
-  {_id: 16, name: "Packing & Unpacking", description: "Packing & Unpacking", booked: false},
-];
-
 const App = () => {
-
-  const [task, setTask] = useState(initialState);
+  const [booked, setBooked] = useState(false);
+  const [task, setTask] = useState(tasks);
 
   const addTask = (newTask) => {
-    console.log("App: addTask", newTask);
-    newTask._id = task.length + 1;
-    setTask([...task, newTask]);
-  }
+    if (newTask) {
+      console.log("App: addTask", newTask);
+      setTask((prevTasks) => [...prevTasks, newTask]);
+    }
+  };
 
   const removeTask = (newTask) => {
-    console.log("App: removeTask", newTask);
-    setTask(task.filter((task) => task._id !== newTask._id));
-  }
+    if (newTask && newTask._id) {
+      console.log("App: removeTask", newTask);
+      setTask((prevTasks) =>
+        prevTasks.filter((task) => task._id !== newTask._id)
+      );
+    }
+  };
 
-  const bookTask = (newTask) => {
-    console.log("App: bookTask", newTask);
-    setTask(task.map((task) => {
-      if (task._id === newTask._id) {
-        return newTask;
-      }
-      return task;
-    }));
-  }
+  const displayConfirmation = () => {
+    setBooked(true);
+  };
 
+  const bookTask = (task) => {
+    if (task) {
+      console.log("App: bookTask", task);
+      const updatedTask = { ...task, booked: true };
+      setTask((prevTasks) =>
+        prevTasks.map((task) => (task._id === task._id ? updatedTask : task))
+      );
+      setBooked(true);
+    }
+  };
 
   return (
     <>
@@ -61,15 +54,12 @@ const App = () => {
         <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/task" element={<TaskList task={task} />} />
+          <Route path="/tasks" element={<TaskList tasks={tasks} />} />
           <Route
             path="/task/:taskId"
-            element={<TaskDetails task={task} />}
+            element={<TaskCard tasks={task} bookTask={bookTask} />}
           />
-          <Route
-            path="/task/new"
-            element={<SearchForm addTask={addTask} />}
-          />
+          <Route path="/task/new" element={<SearchForm addTask={addTask} />} />
         </Routes>
         <SearchForm addTask={addTask} />
       </div>
@@ -78,4 +68,3 @@ const App = () => {
 };
 
 export default App;
-

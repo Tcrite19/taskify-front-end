@@ -1,0 +1,29 @@
+.task-list {
+    display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: #242424;
+  color: white;
+  border-radius: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+
+@media screen and (min-width: 768px) {
+    .task-list {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+     grid-gap: 10px;
+     padding: 10px; 
+    }
+  }
+ 
+

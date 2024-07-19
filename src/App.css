@@ -41,6 +41,10 @@ h6 {
   font-family: "Lato", sans-serif;
 }
 
+h1 {
+  margin: 2rem auto;
+}
+
 a {
   color: var(--text-color);
   text-decoration: none;
@@ -76,7 +80,6 @@ p {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  height: 100vh;
   background-color: #282c34;
   color: white;
 }
