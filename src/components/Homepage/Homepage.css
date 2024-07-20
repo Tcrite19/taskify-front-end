@@ -1,0 +1,10 @@
+.tagline {
+  margin: 4rem auto;
+}
+
+@media (min-width: 768px) {
+  .tagline {
+    font-size: 3rem;
+    text-align: center;
+  }
+}

@@ -14,7 +14,7 @@
 
 :root {
   --bg-color: #fff;
-  --second-bg-color: #f8f8f8;
+  --second-bg-color: #f9f9f9;
   --text-color: #333;
   --link-on-hover-color: #5c5c5c;
   --main-color: #596dde;
@@ -39,7 +39,13 @@ h4,
 h5,
 h6 {
   font-family: "Lato", sans-serif;
+  font-weight: 700;
+  line-height: 2.5rem;
+  margin: 2rem 0;
+  color: var(--text-color);
 }
+
+
 
 a {
   color: var(--text-color);
@@ -58,17 +64,17 @@ li {
   margin-bottom: 10px;
 }
 
-
-
 p {
   margin-bottom: 10px;
+  line-height: 1.5rem;
+  color: var(--text-color);
 }
 
 .container {
   margin: 0 auto;
   max-width: 1200px;
   padding: 20px;
-  background-color: #f4f4f4;
+  background-color: var(--second-bg-color)
 }
 
 #root {
@@ -76,11 +82,11 @@ p {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  height: 100vh;
-  background-color: #282c34;
+  background-color: var(--second-bg-color);
   color: white;
 }
 
 li {
   list-style-type: none;
 }
+

@@ -1,23 +1,59 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
-const TaskList = (props) => {
-  const showList = props.task.map((task) => {
-    console.log("TaskList: task", task);
+
+const TaskList = (props, bookTask) => {
+  const [booked, setBooked] = useState(false);
+
+  useEffect(() => {
+    fetch('/api/tasks')
+    .then((response) => response.json())
+    .then((data) => setBooked(data))
+    .catch((error) => console.error('Error fetching tasks:', error));
+  }, [booked]);
+
+  const handleBookTask = async (id) => {
+    try {
+      const response = await fetch('/api/tasks/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const updatedTask = await response.json();
+      setTasks((prevTasks) =>
+        prevTasks.map((task) => (task._id === id ? updatedTask : task))
+      );
+    } catch (error) {
+      console.error('Error booking task:', error);
+    }
+  };
+
+
+
+  const showList = props.tasks.map((task) => {
 
     return (
       <Card className="text-center" key={task._id}>
         <Card.Body>
           <Card.Title>{task.name}</Card.Title>
           <Card.Text>{task.description}</Card.Text>
-          <Button variant="primary" className="m-2" onClick={() => props.bookTask(task)}>
+          <Button variant="success" className="m-5 order-btn" onClick={() => props.handleBookTask(task)}>
           <Link
             to={`/task/${task._id}/book`}
             state={task}
             className="text-white text-decoration-none"
             onClick={() => {
-              props.bookTask(task);}}
+              props.handleBookTask(task);}}
           >
               Book
             </Link>
@@ -29,8 +65,8 @@ const TaskList = (props) => {
 
   return (
     <>
-      <h2>task List</h2>
-      <ul>{showList}</ul>
+      <h2>Task List</h2>
+      <ul className="task-list">{showList}</ul>
     </>
   );
 };

@@ -1,0 +1,43 @@
+:root {
+  --bg-color: #fff;
+  --second-bg-color: #f8f8f8;
+  --text-color: #333;
+  --link-on-hover-color: #5c5c5c;
+  --main-color: #596dde;
+  --button-color: #4ede72;
+  --button-border-color: #4ede72;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  background-color: var(--second-bg-color);
+  color: white;
+  border-radius: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+.order-btn {
+  background-color: var(--button-color);
+}
+
+@media screen and (min-width: 768px) {
+    .task-list {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+     grid-gap: 10px;
+     padding: 10px; 
+    }
+  }
+ 
+

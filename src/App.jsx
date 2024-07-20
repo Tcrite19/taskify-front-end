@@ -1,81 +1,148 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Route, Routes } from "react-router-dom";
+import {
+  getTasks,
+  addTask,
+  deleteTask,
+  updateTask,
+  bookTask,
+} from "../services/taskService";
 
 import NavBar from "./components/NavBar/NavBar.jsx";
-import Homepage from "./components/Homepage.jsx";
-import { Route, Routes } from "react-router-dom";
+import Loading from "./components/Loading/Loading.jsx";
+import Homepage from "./components/Homepage/Homepage.jsx";
+import LoginPage from "./components/LoginPage/LoginPage.jsx";
+import SignupPage from "./components/SignupPage/SignupPage.jsx";
 import TaskList from "./components/TaskList/TaskList.jsx";
-import TaskDetails from "./components/TaskDetails/TaskDetails.jsx";
+import TaskCard from "./components/TaskCard/TaskCard.jsx";
 import SearchForm from "./components/SearchForm/SearchForm.jsx";
+import data from "../data/data.json";
+import BookingAddress from "./components/BookingAddress/BookingAddress.jsx";
+import Dashboard from "./components/Dashboard/Dashboard.jsx";
+import TaskForm from "./components/TaskForm/TaskForm.jsx";
+import Payment from "./components/Payment/Payment.jsx";
 
 
+const tasks = data;
+
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-const initialState = [
-  {_id: 1, name: "Home Repairs", description: "Home repairs", booked: false},
-  {_id: 2, name: "Yard Work", description: "Yard Work", booked: false},
-  {_id: 3, name: "Painting", description: "Painting", booked: false},
-  {_id: 4, name: "Cleaning", description: "Cleaning", booked: false},
-  {_id: 5, name: "Junk Removal", description: "Junk Removal", booked: false},
-  {_id: 6, name: "Furniture Assembly", description: "Furniture Assembly", booked: false},
-  {_id: 7, name: "Moving", description: "Moving", booked: false},
-  {_id: 8, name: "Electrical Work", description: "Electrical Work", booked: false},
-  {_id: 9, name: "Plumbing Help", description: "Plumbing Help", booked: false},
-  {_id: 10, name: "Locksmith Services", description: "Locksmith Services", booked: false},
-  {_id: 11, name: "Car Wash", description: "Car Wash", booked: false},
-  {_id: 12, name: "Organization", description: "Organization", booked: false},
-  {_id: 13, name: "Errands", description: "Errands", booked: false},
-  {_id: 14, name: "General Mounting", description: "General Mounting", booked: false},
-  {_id: 15, name: "Car Repair", description: "Car Repair", booked: false},
-  {_id: 16, name: "Packing & Unpacking", description: "Packing & Unpacking", booked: false},
-];
-
 const App = () => {
+  const [booked, setBooked] = useState(false);
+  const [task, setTask] = useState(tasks);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [task, setTask] = useState(initialState);
-
-  const addTask = (newTask) => {
-    console.log("App: addTask", newTask);
-    newTask._id = task.length + 1;
-    setTask([...task, newTask]);
-  }
-
-  const removeTask = (newTask) => {
-    console.log("App: removeTask", newTask);
-    setTask(task.filter((task) => task._id !== newTask._id));
-  }
-
-  const bookTask = (newTask) => {
-    console.log("App: bookTask", newTask);
-    setTask(task.map((task) => {
-      if (task._id === newTask._id) {
-        return newTask;
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        setIsLoading(true);
+        const tasks = await getTasks();
+        setTask(tasks);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
       }
-      return task;
-    }));
-  }
+    };
+    fetchTasks();
+  }, []);
 
+  const handleAddTask = async (task) => {
+    const newTask = await addTask(task);
+    setTask([...task, newTask]);
+  };
+
+  const handleDeleteTask = async (id) => {
+    const deletedTask = await deleteTask(id);
+    setTask(task.filter((task) => task._id !== deletedTask._id));
+  };
+
+  const handleUpdateTask = async (id, updatedTask) => {
+    const updatedTaskData = await updateTask(id, updatedTask);
+    setTask(
+      task.map((task) =>
+        task._id === updatedTaskData._id ? updatedTaskData : task
+      )
+    );
+  };
+
+  const handleBookTask = (task) => {
+    if (task) {
+      const updatedTask = { ...task, booked: true };
+      setTask((prevTasks) =>
+        prevTasks.map((task) => (task._id === task._id ? updatedTask : task))
+      );
+      setBooked(true);
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      await API.post("/auth/login", { email, password });
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    try {
+      await API.post("/auth/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
-      <div className="app">
+      <div>
         <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/task" element={<TaskList task={task} />} />
           <Route
-            path="/task/:taskId"
-            element={<TaskDetails task={task} />}
+            path="/signup"
+            element={<SignupPage SignupPage={handleSignup} />}
           />
           <Route
-            path="/task/new"
+            path="/login"
+            element={<LoginPage loginPage={handleLogin} />}
+          />
+          <Route path="/account" element={<UserAccount />} />
+          <Route path="/tasks" element={<TaskList tasks={tasks} />} />
+          <Route
+            path="/payment"
+            element={<Payment addTask={handleAddTask} />}
+          />
+          <Route path="/dashboard" element={<Dashboard tasks={task} />} />
+          <Route
+            path="/task/:id"
+            element={<TaskCard tasks={task} bookTask={bookTask} />}
+          />
+          <Route
+            path="/task/:id/book"
+            element={<BookingAddress bookTask={handleBookTask} />}
+          />
+          <Route path="/task/new" element={<SearchForm addTask={addTask} />} />
+          <Route
+            path="/task/:id/edit"
             element={<SearchForm addTask={addTask} />}
           />
+          <Route path="/dashboard" element={<Dashboard tasks={task} />} />
+          <Route path="/task-form" element={<TaskForm addTask={addTask} />} />
         </Routes>
-        <SearchForm addTask={addTask} />
+       
+        {isLoading && <Loading />}
       </div>
     </>
   );
 };
 
 export default App;
-
