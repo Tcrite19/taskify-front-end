@@ -115,7 +115,6 @@ const App = () => {
             path="/login"
             element={<LoginPage loginPage={handleLogin} />}
           />
-          <Route path="/account" element={<UserAccount />} />
           <Route path="/tasks" element={<TaskList tasks={tasks} />} />
           <Route
             path="/payment"
