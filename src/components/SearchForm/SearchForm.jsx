@@ -1,79 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import Row from "react-bootstrap/Row";
+import { Card, Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const initialState = {
   name: "",
   description: "",
 };
 
-const TaskCard = (task, setOrdered, bookTask) => {
-  return (
-    <Card className="text-center h-100 shadow-sm bg-white rounded">
-      <Card.Body>
-        <Card.Title>{task.name}</Card.Title>
-        <Card.Text>{task.description}</Card.Text>
-        <Button
-          variant="success"
-          className="m-2"
-          onClick={() => {
-            bookTask(task);
-            console.log("TaskCard: booking task", tasks);
-          }}
-        >
-          Book
-        </Button>
-        <Link
-          to={`/task/${task._id}/book`}
-          state={task}
-          className="text-white text-decoration-none" />
-      </Card.Body>      
-    </Card>
-  );
-};
 
-const TaskList = (props) => {
-  const showList = props.tasks.map((task) => {
-    console.log("TaskList: task", task);
-    return (
-      <Card
-        className="text-center h-100 shadow-sm bg-white rounded"
-        key={task._id}
-      >
-        <Card.Body>
-          <Card.Title>{task.name}</Card.Title>
-          <Card.Text>{task.description}</Card.Text>
-          <Button
-            variant="success"
-            className="m-2"
-            onClick={() => {
-              bookTask(task);
-              console.log("TaskList: booking task", task);
-            }}
-          >
-            Book
-          </Button>
-          <Link
-            to={`/task/${task._id}/book`}
-            state={task}
-            className="text-white text-decoration-none"
-            onClick={() => {
-              setOrdered(true);
-              console.log("TaskList: booking task", task);
-            }}
-          >
-            Book
-          </Link>
-        </Card.Body>
-      </Card>
-    );
-  });
-  return <>{showList}</>;
-};
 
 const SearchForm = (props) => {
   const navigate = useNavigate();

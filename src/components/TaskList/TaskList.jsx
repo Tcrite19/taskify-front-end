@@ -2,6 +2,7 @@ import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 
 const TaskList = (props, bookTask) => {
@@ -40,14 +41,13 @@ const TaskList = (props, bookTask) => {
 
 
   const showList = props.tasks.map((task) => {
-    console.log("TaskList: task", task);
 
     return (
       <Card className="text-center" key={task._id}>
         <Card.Body>
           <Card.Title>{task.name}</Card.Title>
           <Card.Text>{task.description}</Card.Text>
-          <Button variant="primary" className="m-2" onClick={() => props.handleBookTask(task)}>
+          <Button variant="success" className="m-5 order-btn" onClick={() => props.handleBookTask(task)}>
           <Link
             to={`/task/${task._id}/book`}
             state={task}
@@ -65,7 +65,7 @@ const TaskList = (props, bookTask) => {
 
   return (
     <>
-      <h2>task List</h2>
+      <h2>Task List</h2>
       <ul className="task-list">{showList}</ul>
     </>
   );
