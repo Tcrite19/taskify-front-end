@@ -2,9 +2,37 @@
   margin: 4rem auto;
 }
 
+.homepage-image-container {
+  margin: 0 auto;
+}
+
+.homepage-image-container img {
+  width: 100%;
+}
+
 @media (min-width: 768px) {
   .tagline {
     font-size: 3rem;
     text-align: center;
+  }
+
+  .homepage-image-container {
+    width: 50%;
+  }
+
+  .homepage-image-container img {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tagline {
+    font-size: 4rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .tagline {
+    font-size: 5rem;
   }
 }

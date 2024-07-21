@@ -1,3 +1,14 @@
+
+:root {
+    --bg-color: #fff;
+    --second-bg-color: #f9f9f9;
+    --text-color: #333;
+    --link-on-hover-color: #5c5c5c;
+    --main-color: #596dde;
+    --button-color: #4ede72;
+    --button-border-color: #4ede72;
+  }
+
 .dashboard {
     display: flex;
     flex-direction: column;
@@ -5,14 +16,186 @@
     justify-content: center;
     height: 100vh;
     width: 100%;
-    background-color: var(--second-bg-color);
+    background-color: blanchedalmond;
     color: white;
+}
+
+.dashboard-links {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    margin: 40px auto;
+    padding: 20px 0;
+    background-color: var(--second-bg-color);
+}
+
+.dashboard-link {
+    text-decoration: none;
+    color: white;
+    font-size: 20px;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: var(--main-color);
+    transition: all 0.3s ease-in-out;
 }
 
 .dashboard-img {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: auto;
     width: 100%;
+}
+
+.dashboard-img img {
+    height: 200px;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    margin: 20px auto;
+    border: 5px solid white;
+}
+
+#dashboard-img-gallery {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 100%;
+    flex-wrap: wrap;
+    padding: 10px; 
+    gap: 10px;
+    margin: 20px auto;
+
+}
+
+/* media queries for iPad mini */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+ .dashboard-link {
+    margin: 0 10px;
+    padding: 10px;
+   
+  }
+
+  .dashboard-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+ 
+  
+  .dashboard-img img {
+    height: 200px;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    margin: 20px auto;
+  }
+
+  #dashboard-img-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 10px;
+    padding: 10px;
+  }
+}
+
+
+/* media queries for iPad Air */
+@media screen and (min-width: 820px) and (max-width: 1280px) {
+    
+    .dashboard-links {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .dashboard-img img {
+        height: 200px;
+        width: 200px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin: 20px;
+    }
+
+    #dashboard-img-gallery {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 200px;
+        width: 200px;
+        flex-wrap: wrap;
+    }
+}
+
+/* Azus media queries */
+@media screen and (min-width: 853px) and (max-width: 1280px) {
+    .dashboard-img-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 10px;
+        padding: 10px;
+    }
+}
+
+/* media queries for surface duo */
+@media screen and (min-width: 912px) and (max-width: 1368px) {
+
+    .dashboard-img img {
+        height: 200px;
+        width: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+        margin: 20px;
+    } 
+
+     #dashboard-img-gallery {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+        width: 200px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+
+    .dashboard-links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .dashboard-link {
+        margin: 0 10px;
+        padding: 10px;
+    }
+
+    .dashboard-img img {
+        height: 200px;
+        width: 100%;
+        border-radius: 10px;
+        object-fit: cover;
+        margin: 20px auto;
+    }
+
+    #dashboard-img-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: 10px;
+        padding: 10px;
+    }
 }
