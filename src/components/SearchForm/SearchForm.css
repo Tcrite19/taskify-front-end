@@ -1,0 +1,10 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.default-button {
+    background-color: white;
+    border-radius: 8px;
+    color: blue;
+    font-size: 24pt;
+    padding: 15px 50px;
+    width: 300px;
+}

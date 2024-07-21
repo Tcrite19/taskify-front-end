@@ -1,23 +1,37 @@
-import { Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 const UserAccount = (props) => {
-    return (
-        <>
+  const handleLogout = () => {
+    props.logout();
+    props.history.push("/login");
+  };
+
+  return (
+    <>
+      <Container>
+        <Row>
+          <Col>
             <Card className="text-center h-100 shadow-sm bg-white rounded">
-                <Card.Body>
-                    <Card.Title>Your Account</Card.Title>
-                    <Card.Text>Name: {props.user.name}</Card.Text>
-                    <Card.Text>Email: {props.user.email}</Card.Text>
-                    <Card.Text>Phone: {props.user.phone}</Card.Text>
-                    <Card.Text>Postal Code: {props.user.postalCode}</Card.Text>
-                    <Link to="/logout">
-                        <Button variant="success">Logout</Button>
-                    </Link>
-                </Card.Body>
+              <Card.Body>
+                <Card.Title>Your Account</Card.Title>
+                <Card.Text>Name: </Card.Text>
+                <Card.Text>Email: </Card.Text>
+                <Card.Text>Phone: </Card.Text>
+                <Card.Text>Postal Code: </Card.Text>
+                <Card.Text>Address: </Card.Text>
+                <Link to="/logout">
+                  <Button variant="success" className="default-button" onClick={handleLogout}>
+                    Logout
+                  </Button>
+                </Link>
+              </Card.Body>
             </Card>
-        </>
-    );
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
 };
 
 export default UserAccount;

@@ -58,16 +58,6 @@ const BookingAddress = ({ bookTask }) => {
     alert("Thank you for booking with us!");
   };
 
-  const displayConfirmation = () => {
-    setBooked(true);
-    displaySuccess();
-  };
-
-  useEffect(() => {
-    if (booked) {
-      displayConfirmation();
-    }
-  }, [booked]);
 
   return (
     <Container>

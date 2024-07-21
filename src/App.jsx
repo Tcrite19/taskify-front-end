@@ -15,13 +15,13 @@ import LoginPage from "./components/LoginPage/LoginPage.jsx";
 import SignupPage from "./components/SignupPage/SignupPage.jsx";
 import TaskList from "./components/TaskList/TaskList.jsx";
 import TaskCard from "./components/TaskCard/TaskCard.jsx";
-import SearchForm from "./components/SearchForm/SearchForm.jsx";
 import data from "../data/data.json";
 import BookingAddress from "./components/BookingAddress/BookingAddress.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import TaskForm from "./components/TaskForm/TaskForm.jsx";
 import CreditCard from "./components/CreditCard/CreditCard.jsx";
 import LoginSignupPage from "./components/LoginSignupPage/LoginSignupPage.jsx";
+import UserAccount from "./components/UserAccount/UserAccount.jsx";
 
 
 const tasks = data;
@@ -35,10 +35,17 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTasks = async () => {
+    const fetchTasks = async (task) => {
       try {
         setIsLoading(true);
         const tasks = await getTasks();
+        if (data & data.results) {
+          const taskListItem = data.results.map((task) => ({
+            ...task,
+            booked: false,
+          }));
+          setTask(taskList);
+        }
         setTask(tasks);
         setIsLoading(false);
       } catch (error) {
@@ -48,6 +55,36 @@ const App = () => {
     fetchTasks();
   }, []);
 
+
+
+  const fetchTasks = async (task) => {
+    try {
+      
+      const tasks = await getTasks(task);
+      if (tasks & tasks.results) {
+        const taskListItem = tasks.results.map((task) => ({
+          ...task,
+          booked: false,
+        }));
+        setTask(taskListItem);
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
+
+  const searchTask = async (_id) => {
+    try {
+      const tasks = await getTasks(task);
+      setTask(tasks);
+    } catch (error) {
+      console.error("Error searching tasks:", error);
+    }
+  };
+
+  const handleSearch = async (task) => {
+    await searchTask(task);
+  }
   const handleAddTask = async (task) => {
     const newTask = await addTask(task);
     setTask([...task, newTask]);
@@ -102,6 +139,11 @@ const App = () => {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <>
       <div>
@@ -109,11 +151,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/signup-login" element={<LoginSignupPage />} />
-          {/* <Route path="/signup-login/login" element={<LoginPage />} />
-          <Route
-            path="/signup-login/signup"
-            element={<SignupPage SignupPage={handleSignup} />}
-          /> */}
+          
           <Route
             path="/signup"
             element={<SignupPage SignupPage={handleSignup} />}
@@ -124,8 +162,6 @@ const App = () => {
           />
           <Route path="/dashboard" element={<Dashboard tasks={task} />} />
           <Route path="/tasks" element={<TaskList tasks={tasks} />} />
-          
-      
           <Route
             path="/task/:id"
             element={<TaskCard tasks={task} bookTask={bookTask} />}
@@ -134,19 +170,23 @@ const App = () => {
             path="/task/:id/book"
             element={<BookingAddress bookTask={handleBookTask} />}
           />
-          <Route path="/task/new" element={<SearchForm addTask={addTask} />} />
+          <Route path="/task/new" element={<TaskCard tasks={task} />} />
           <Route
             path="/task/:id/edit"
-            element={<SearchForm addTask={addTask} />}
+            element={<TaskCard tasks={task} bookTask={bookTask} />}
           />
           <Route
             path="/payment"
-            element={<CreditCard bookTask={handleBookTask}homepage-image-container />}
+            element={<CreditCard bookTask={handleBookTask} />}
           />
+          <Route path="/account" element={<UserAccount  />} />
           <Route path="/task-form" element={<TaskForm addTask={addTask} />} />
+          <Route path="/logout" element={<LoginPage loginPage={handleLogout} />} />
+
         </Routes>
         {isLoading && <Loading />}
       </div>
+      <TaskList tasks={tasks} />
     </>
   );
 };
