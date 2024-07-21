@@ -21,6 +21,7 @@ import BookingAddress from "./components/BookingAddress/BookingAddress.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import TaskForm from "./components/TaskForm/TaskForm.jsx";
 import CreditCard from "./components/CreditCard/CreditCard.jsx";
+import LoginSignupPage from "./components/LoginSignupPage/LoginSignupPage.jsx";
 
 
 const tasks = data;
@@ -107,6 +108,12 @@ const App = () => {
         <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
+          <Route path="/signup-login" element={<LoginSignupPage />} />
+          {/* <Route path="/signup-login/login" element={<LoginPage />} />
+          <Route
+            path="/signup-login/signup"
+            element={<SignupPage SignupPage={handleSignup} />}
+          /> */}
           <Route
             path="/signup"
             element={<SignupPage SignupPage={handleSignup} />}

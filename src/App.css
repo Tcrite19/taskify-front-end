@@ -19,7 +19,7 @@
   --link-on-hover-color: #5c5c5c;
   --main-color: #596dde;
   --button-color: #4ede72;
-  --button-border-color: #4ede72;
+  --button-on-hover-color: #3ecf4e;
 }
 
 html {
@@ -54,6 +54,7 @@ a {
 
 a:hover {
   text-decoration: underline;
+  color: var(--button-on-hover-color);
 }
 
 ul {
