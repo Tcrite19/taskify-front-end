@@ -1,9 +1,8 @@
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import BookingAddress from "../BookingAddress/BookingAddress.jsx";
+import "./TaskCard.css";
 
 const TaskCard = (task, bookTask) => {
-  
   return (
     <>
       <Link to={`/task/${task._id}`}></Link>

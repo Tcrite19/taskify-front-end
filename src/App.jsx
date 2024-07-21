@@ -20,7 +20,7 @@ import data from "../data/data.json";
 import BookingAddress from "./components/BookingAddress/BookingAddress.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import TaskForm from "./components/TaskForm/TaskForm.jsx";
-import Payment from "./components/Payment/Payment.jsx";
+import CreditCard from "./components/CreditCard/CreditCard.jsx";
 
 
 const tasks = data;
@@ -115,13 +115,10 @@ const App = () => {
             path="/login"
             element={<LoginPage loginPage={handleLogin} />}
           />
-          <Route path="/account" element={<UserAccount />} />
-          <Route path="/tasks" element={<TaskList tasks={tasks} />} />
-          <Route
-            path="/payment"
-            element={<Payment addTask={handleAddTask} />}
-          />
           <Route path="/dashboard" element={<Dashboard tasks={task} />} />
+          <Route path="/tasks" element={<TaskList tasks={tasks} />} />
+          
+      
           <Route
             path="/task/:id"
             element={<TaskCard tasks={task} bookTask={bookTask} />}
@@ -135,10 +132,12 @@ const App = () => {
             path="/task/:id/edit"
             element={<SearchForm addTask={addTask} />}
           />
-          <Route path="/dashboard" element={<Dashboard tasks={task} />} />
+          <Route
+            path="/payment"
+            element={<CreditCard bookTask={handleBookTask}homepage-image-container />}
+          />
           <Route path="/task-form" element={<TaskForm addTask={addTask} />} />
         </Routes>
-       
         {isLoading && <Loading />}
       </div>
     </>

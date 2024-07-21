@@ -3,9 +3,10 @@ import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
+import TaskCard from "../TaskCard/TaskCard.jsx";
 
 
-const TaskList = (props, bookTask) => {
+const TaskList = (props) => {
   const [booked, setBooked] = useState(false);
 
   useEffect(() => {
@@ -39,12 +40,11 @@ const TaskList = (props, bookTask) => {
   };
 
 
-
   const showList = props.tasks.map((task) => {
-
     return (
+  
       <Card className="text-center" key={task._id}>
-        <Card.Body>
+        <Card.Body className="shadow-sm bg-white rounded">
           <Card.Title>{task.name}</Card.Title>
           <Card.Text>{task.description}</Card.Text>
           <Button variant="success" className="m-5 order-btn" onClick={() => props.handleBookTask(task)}>
