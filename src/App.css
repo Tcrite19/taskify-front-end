@@ -95,3 +95,19 @@ li {
 @media screen and (min-width: 768px) {
   
 }
+
+/* default button styling */
+.dashboard-link {
+  /* text-decoration: none;
+  color: white;
+  font-size: 20px;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--main-color);
+  transition: all 0.3s ease-in-out; */
+}
+
+label.form-label.form-label {
+  color: black;
+}

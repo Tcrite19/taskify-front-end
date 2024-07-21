@@ -2,6 +2,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 import TaskList from "../TaskList/TaskList";
+import UserAccount from "../UserAccount/UserAccount";
 import "../TaskList/TaskList.css";
 import "./Dashboard.css";
 const Dashboard = (props) => {
@@ -25,6 +26,9 @@ const Dashboard = (props) => {
           View Tasks
         </Link>
       </div>
+
+     
+      <UserAccount account={props.account} />
       <div className="dashboard-content">
         <h2>Popular Projects</h2>
         <div id="dashboard-img-gallery">

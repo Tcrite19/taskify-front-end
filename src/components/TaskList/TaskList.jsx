@@ -6,66 +6,77 @@ import { useNavigate } from "react-router-dom";
 import TaskCard from "../TaskCard/TaskCard.jsx";
 
 
-const TaskList = (props) => {
+const TaskList = ( { tasks = [], handleBookTask }) => {
+  const [taskList, setTaskList] = useState(tasks);
   const [booked, setBooked] = useState(false);
 
   useEffect(() => {
-    fetch('/api/tasks')
-    .then((response) => response.json())
-    .then((data) => setBooked(data))
-    .catch((error) => console.error('Error fetching tasks:', error));
-  }, [booked]);
-
-  const handleBookTask = async (id) => {
-    try {
-      const response = await fetch('/api/tasks/book', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+    const fetchTasks = async () => {
+      try {
+        const response = await fetch('/api/tasks');
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setTaskList(data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
       }
+    };
 
-      const updatedTask = await response.json();
-      setTasks((prevTasks) =>
-        prevTasks.map((task) => (task._id === id ? updatedTask : task))
-      );
-    } catch (error) {
-      console.error('Error booking task:', error);
-    }
-  };
+    fetchTasks();
+  }, []);
 
 
-  const showList = props.tasks.map((task) => {
-    return (
-  
-      <Card className="text-center" key={task._id}>
-        <Card.Body className="shadow-sm bg-white rounded">
-          <Card.Title>{task.name}</Card.Title>
-          <Card.Text>{task.description}</Card.Text>
-          <Button variant="success" className="m-5 order-btn" onClick={() => props.handleBookTask(task)}>
+  // const handleBookTask = async (id) => {
+  //   try {
+  //     const response = await fetch('/api/tasks/book', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ id }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`Error: ${response.statusText}`);
+  //     }
+
+  //     const updatedTask = await response.json();
+  //     setTasks((prevTasks) =>
+  //       prevTasks.map((task) => (task._id === id ? updatedTask : task))
+  //     );
+  //   } catch (error) {
+  //     console.error('Error booking task:', error);
+  //   }
+  // };
+
+
+  const showList = taskList.map((task) => (
+    <Card className="text-center" key={task._id}>
+      <Card.Body className="shadow-sm bg-white rounded">
+        <Card.Title>{task.name}</Card.Title>
+        <Card.Text>{task.description}</Card.Text>
+        <Button
+          variant="success"
+          className="m-5 order-btn"
+          onClick={() => handleBookTask(task._id)}
+        >
           <Link
             to={`/task/${task._id}/book`}
             state={task}
             className="text-white text-decoration-none"
-            onClick={() => {
-              props.handleBookTask(task);}}
           >
-              Book
-            </Link>
-          </Button>
-        </Card.Body>
-      </Card>
-    );
-  });
+            Book
+          </Link>
+        </Button>
+      </Card.Body>
+    </Card>
+  ));
 
   return (
     <>
-      <h2>Task List</h2>
+      <h2>Tasks List</h2>
       <ul className="task-list">{showList}</ul>
     </>
   );
