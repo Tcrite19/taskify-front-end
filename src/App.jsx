@@ -22,7 +22,7 @@ import TaskForm from "./components/TaskForm/TaskForm.jsx";
 import CreditCard from "./components/CreditCard/CreditCard.jsx";
 import LoginSignupPage from "./components/LoginSignupPage/LoginSignupPage.jsx";
 import UserAccount from "./components/UserAccount/UserAccount.jsx";
-
+import Footer from "./components/Footer/Footer.jsx";
 
 const tasks = data;
 
@@ -55,11 +55,8 @@ const App = () => {
     fetchTasks();
   }, []);
 
-
-
   const fetchTasks = async (task) => {
     try {
-      
       const tasks = await getTasks(task);
       if (tasks & tasks.results) {
         const taskListItem = tasks.results.map((task) => ({
@@ -84,7 +81,7 @@ const App = () => {
 
   const handleSearch = async (task) => {
     await searchTask(task);
-  }
+  };
   const handleAddTask = async (task) => {
     const newTask = await addTask(task);
     setTask([...task, newTask]);
@@ -104,13 +101,17 @@ const App = () => {
     );
   };
 
-  const handleBookTask = (task) => {
-    if (task) {
-      const updatedTask = { ...task, booked: true };
-      setTask((prevTasks) =>
-        prevTasks.map((task) => (task._id === task._id ? updatedTask : task))
-      );
+  const handleBookTask = (formData) => {
+    if (!formData) {
+      console.error("Form data is null or undefined");
+      return;
+    }
+
+    try {
       setBooked(true);
+      bookTask(formData);
+    } catch (error) {
+      console.error("An error occurred while handling the book task:", error);
     }
   };
 
@@ -151,7 +152,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/signup-login" element={<LoginSignupPage />} />
-          
+
           <Route
             path="/signup"
             element={<SignupPage SignupPage={handleSignup} />}
@@ -179,14 +180,16 @@ const App = () => {
             path="/payment"
             element={<CreditCard bookTask={handleBookTask} />}
           />
-          <Route path="/account" element={<UserAccount  />} />
+          <Route path="/account" element={<UserAccount />} />
           <Route path="/task-form" element={<TaskForm addTask={addTask} />} />
-          <Route path="/logout" element={<LoginPage loginPage={handleLogout} />} />
-
+          <Route
+            path="/logout"
+            element={<LoginPage loginPage={handleLogout} />}
+          />
         </Routes>
         {isLoading && <Loading />}
       </div>
-      <TaskList tasks={tasks} />
+      <Footer />
     </>
   );
 };

@@ -13,10 +13,7 @@ main {
     margin: 16px;
 }
 
-.brand {
-    font-family: "Lato", sans-serif;
-    font-weight: 700;
-    line-height: 2.5rem;
-    margin: 2rem 0;
-    color: var(--main-color);
+.logo {
+    width: 120px;
+    height: 100px;
 }
