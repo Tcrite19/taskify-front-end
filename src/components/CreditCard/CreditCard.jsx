@@ -1,6 +1,8 @@
-import { Container, Row, Col, Form, Button, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Confirmation from "../Confirmation/Confirmation";
+import './CreditCard.css';
 
 const initialState = {
   cardHolderName: "",
@@ -10,17 +12,21 @@ const initialState = {
 };
 
 const CreditCard = ({ bookTask }) => {
+  const { id } = useParams();
   const [paid, setPaid] = useState(false);
   const [formData, setFormData] = useState(initialState);
   const [validated, setValidated] = useState(false);
-
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (paid) {
-      alert("Thanks for booking!");
+      setShowConfirmation(true);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 7000); 
     }
-  }, [paid]);
+  }, [paid, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -32,8 +38,6 @@ const CreditCard = ({ bookTask }) => {
       bookTask(formData);
       setPaid(true);
       setFormData(initialState);
-      alert("Your booking is confirmed!");
-      navigate("/dashboard");
     }
     setValidated(true);
   };
@@ -47,31 +51,11 @@ const CreditCard = ({ bookTask }) => {
     }
   };
 
-  const handleBack = () => {
-    navigate("/task");
-  };
-
-  const displayError = () => {
-    alert("Please enter a name and address.");
-  };
-
-  const displaySuccess = () => {
-    alert("Thank you for booking with us!");
-  };
-
-  useEffect(() => {
-    if (paid) {
-      displaySuccess();
-    }
-  }, [paid]);
-
   return (
     <Container>
       <Row>
         <Col>
-          <h2 className="text-center my-5 text-black">
-            Credit Card Component
-          </h2>
+          <h2 className="text-center my-5 text-black">Credit Card Payment</h2>
         </Col>
       </Row>
       <Row>
@@ -92,6 +76,9 @@ const CreditCard = ({ bookTask }) => {
                 onChange={handleChange}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter your name.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formCreditCardNumber">
               <Form.Label>Credit Card</Form.Label>
@@ -103,28 +90,37 @@ const CreditCard = ({ bookTask }) => {
                 onChange={handleChange}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter your credit card number.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formExpiryDate">
               <Form.Label>Expiry Date</Form.Label>
               <Form.Control
-                type="number"
-                placeholder="Expiry Date"
+                type="text"
+                placeholder="MM/YY"
                 name="expiryDate"
                 value={formData.expiryDate}
                 onChange={handleChange}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter the expiry date.
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formCVC">
               <Form.Label>CVC</Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 placeholder="CVC"
                 name="cvc"
                 value={formData.cvc}
                 onChange={handleChange}
                 required
               />
+              <Form.Control.Feedback type="invalid">
+                Please enter the CVC.
+              </Form.Control.Feedback>
             </Form.Group>
             <Button variant="primary" type="submit">
               Submit
@@ -132,9 +128,17 @@ const CreditCard = ({ bookTask }) => {
           </Form>
         </Col>
       </Row>
+      <Row>
+        <Col>
+          {showConfirmation && (
+            <div className="d-flex justify-content-center">
+              <Confirmation toggle={setShowConfirmation} />
+            </div>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 };
 
 export default CreditCard;
-

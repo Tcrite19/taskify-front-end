@@ -151,7 +151,7 @@ const BookingAddress = ({ bookTask }) => {
                 required
               />
             </Form.Group>
-            <Button variant="primary" type="submit">
+            <Button className="dashboard-link" variant="primary" type="submit">
               Submit
             </Button>
           </Form>

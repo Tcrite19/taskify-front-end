@@ -1,8 +1,9 @@
 import { Container, Row, Col } from "react-bootstrap";
-
+import SearchForm from "../SearchForm/SearchForm";
 import { Link } from "react-router-dom";
 import TaskList from "../TaskList/TaskList";
 import UserAccount from "../UserAccount/UserAccount";
+
 import "../TaskList/TaskList.css";
 import "./Dashboard.css";
 const Dashboard = (props) => {
@@ -19,15 +20,12 @@ const Dashboard = (props) => {
         <Link className="dashboard-link" to="/account">
           Account
         </Link>
-        <Link className="dashboard-link" to="/task/new">
-          Add New Task
-        </Link>
         <Link className="dashboard-link" to="/tasks">
           View Tasks
         </Link>
       </div>
 
-     
+     <SearchForm className="search-form" bookTask={props.bookTask}/>
       <UserAccount account={props.account} />
       <div className="dashboard-content">
         <h2>Popular Projects</h2>
@@ -38,7 +36,7 @@ const Dashboard = (props) => {
               alt="man assembling furniture"
             />
             <h3>Furniture Assembly</h3>
-            <p>Projects starting at $47</p>
+            <p>Projects starting at $49</p>
           </div>
           <div className="dashboard-img">
             <img
@@ -46,7 +44,7 @@ const Dashboard = (props) => {
               alt="men loading a truck"
             />
             <h3>Help Moving</h3>
-            <p>Projects starting at $56</p>
+            <p>Projects starting at $67</p>
           </div>
           <div className="dashboard-img">
             <img
@@ -59,7 +57,7 @@ const Dashboard = (props) => {
           <div className="dashboard-img">
             <img src="public/img/AdobeStock_320287361.jpeg" alt="drill" />
             <h3>Home Cleaning</h3>
-            <p>Projects starting at $40</p>
+            <p>Projects starting at $49</p>
           </div>
           <div className="dashboard-img">
             <img
@@ -67,7 +65,7 @@ const Dashboard = (props) => {
               alt="man fixing a leaky faucet"
             />
             <h3>Plumbing Repairs</h3>
-            <p>Projects starting at $67</p>
+            <p>Projects starting at $74</p>
           </div>
           <div className="dashboard-img">
             <img
@@ -75,7 +73,7 @@ const Dashboard = (props) => {
               alt="electrician fixing a circuit"
             />
             <h3>Electrical Help</h3>
-            <p>Projects starting at $67</p>
+            <p>Projects starting at $69</p>
           </div>
           <div className="dashboard-img">
             <img
@@ -83,7 +81,7 @@ const Dashboard = (props) => {
               alt="men carrying a couch"
             />
             <h3>Heavy Lifting</h3>
-            <p>Projects starting at $54</p>
+            <p>Projects starting at $61</p>
           </div>
           <div className="dashboard-img">
             <img
@@ -91,7 +89,7 @@ const Dashboard = (props) => {
               alt="gardener trimming shrubs"
             />
             <h3>Yard Word & Gardeing</h3>
-            <p>Projects starting at $44</p>
+            <p>Projects starting at $47</p>
           </div>
         </div>
       </div>

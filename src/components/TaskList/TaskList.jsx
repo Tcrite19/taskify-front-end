@@ -59,7 +59,7 @@ const TaskList = ( { tasks = [], handleBookTask }) => {
         <Card.Text>{task.description}</Card.Text>
         <Button
           variant="success"
-          className="m-5 order-btn"
+          className="m-5 order-btn dashboard-link"
           onClick={() => handleBookTask(task._id)}
         >
           <Link

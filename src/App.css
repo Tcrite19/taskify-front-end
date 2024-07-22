@@ -97,17 +97,30 @@ li {
 }
 
 /* default button styling */
+
 .dashboard-link {
-  /* text-decoration: none;
+  text-decoration: none;
   color: white;
   font-size: 20px;
   margin: 10px 0;
   padding: 10px;
   border-radius: 5px;
   background-color: var(--main-color);
-  transition: all 0.3s ease-in-out; */
+  transition: all 0.3s ease-in-out;
+}
+
+.dashboard-link:hover {
+  background-color: var(--button-color);
+  color: white;
 }
 
 label.form-label.form-label {
   color: black;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .dashboard-link {
+      margin: 0 10px;
+      padding: 10px;
+  }
 }
