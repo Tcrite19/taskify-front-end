@@ -1,16 +1,77 @@
+.homepage-container {
+  margin: 0 auto;
+  padding: 10px 0;
+  background-color: var(--bg-color);
+}
+
 .tagline {
   margin: 4rem auto;
 }
 
+/* homepage image */
 .homepage-image-container {
   margin: 0 auto;
+  padding: 10px 0;
+  background-color: #e2e6fe;
+  border-radius: 25px;
+}
+
+.homepage-image {
+  margin: 2rem auto;
+  
 }
 
 .homepage-image-container img {
   width: 100%;
+  border-radius: 5px;
 }
 
-@media (min-width: 768px) {
+
+
+/* dashboard image gallery */
+.dashboard-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 25px;
+}
+
+.dashboard-img img {
+  height: 200px;
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  margin: 20px auto;
+  border: 5px solid white;
+}
+
+#dashboard-img-gallery {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 10px; 
+  gap: 10px;
+  margin: 20px auto;
+}
+
+.dashboard-img-title {
+  margin: 0 auto 12px;
+}
+
+.dashboard-img-desc {
+  margin-bottom: 20px;
+}
+
+/* media queries for iPad mini */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
   .tagline {
     font-size: 3rem;
     text-align: center;
@@ -22,12 +83,108 @@
 
   .homepage-image-container img {
     width: 100%;
+    border-radius: 5px;
+  }
+
+  .dashboard-img img {
+    height: 200px;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+    margin: 20px auto;
+  }
+
+  #dashboard-img-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 10px;
+    padding: 10px;
   }
 }
 
-@media (min-width: 1024px) {
+/* media queries for iPad Air */
+@media screen and (min-width: 820px) and (max-width: 1280px) {
+  .tagline {
+    font-size: 3rem;
+    text-align: center;
+  }
+    .dashboard-img img {
+      height: 200px;
+      width: 200px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin: 20px;
+  }
+
+  #dashboard-img-gallery {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+      height: 200px;
+      width: 200px;
+      flex-wrap: wrap;
+  }
+
+}
+
+/* Azus media queries */
+@media screen and (min-width: 853px) and (max-width: 1280px) {
+  .dashboard-img-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-gap: 10px;
+      padding: 10px;
+  }
+}
+
+
+/* media queries for surface duo */
+@media screen and (min-width: 912px) and (max-width: 1368px) {
+
+  .dashboard-img img {
+      height: 200px;
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      margin: 20px;
+  } 
+
+   #dashboard-img-gallery {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+      width: 200px;
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+}
+
+
+@media screen and (min-width: 1200px) {
+
   .tagline {
     font-size: 4rem;
+  }
+  .homepage-image-container img {
+    width: 80%;
+    border-radius: 5px;
+}
+  .dashboard-img img {
+      height: 200px;
+      width: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+      margin: 20px auto;
+  }
+
+  #dashboard-img-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-gap: 10px;
+      padding: 10px;
   }
 }
 

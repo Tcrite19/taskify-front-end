@@ -76,7 +76,7 @@ p {
   margin: 0 auto;
   max-width: 1200px;
   padding: 20px;
-  background-color: var(--second-bg-color)
+  background-color: var(--bg-color)
 }
 
 #root {
@@ -84,7 +84,7 @@ p {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background-color: var(--second-bg-color);
+  background-color: var(--bg-color);
   color: white;
 }
 

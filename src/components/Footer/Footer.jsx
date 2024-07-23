@@ -77,7 +77,7 @@ const Footer = () => {
         </a>
       </div>
       <a href="https://github.com/AlejandraValdivia">
-        <p class="footer-copyright"></p>
+        <p class="footer-copyright">&copy; Taskify 2024</p>
       </a>
     </footer>
   );

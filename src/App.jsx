@@ -23,6 +23,7 @@ import CreditCard from "./components/CreditCard/CreditCard.jsx";
 import LoginSignupPage from "./components/LoginSignupPage/LoginSignupPage.jsx";
 import UserAccount from "./components/UserAccount/UserAccount.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import ErrorPage from "./components/404/ErrorPage.jsx";
 
 const tasks = data;
 
@@ -128,7 +129,7 @@ const App = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await API.post("/auth/register", {
+      await API.post("/signup", {
         firstName,
         lastName,
         email,
@@ -186,8 +187,11 @@ const App = () => {
             path="/logout"
             element={<LoginPage loginPage={handleLogout} />}
           />
+
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
-        {isLoading && <Loading />}
+
+      
       </div>
       <Footer />
     </>
