@@ -1,0 +1,30 @@
+.error-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    background-color: var(--bg-color);
+    color: white;
+}
+
+.error-page-image img {
+    background: url('public/img/AdobeStock_189916326.jpeg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    height: 50vh;
+}
+
+@media (min-width: 768px) {
+    .error-page-image img{
+        background: url('public/img/AdobeStock_189916326.jpeg') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 50vh;
+    }
+}

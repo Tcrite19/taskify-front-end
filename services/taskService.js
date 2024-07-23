@@ -1,8 +1,8 @@
-const BASE_URL = "http://localhost:3000/tasks";
+const BASE_URL = "http://localhost:3000/";
 
 export const getTasks = async (task) => {
   try {
-    const response = await fetch(BASE_URL);
+    const response = await fetch(`${BASE_URL}/tasks?name=${task}` || BASE_URL + "/tasks");
     const tasks = await response.json();
     return tasks;
   } catch (error) {

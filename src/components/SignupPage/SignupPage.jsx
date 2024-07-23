@@ -10,11 +10,13 @@ const API = axios.create({
   baseURL: BASE_URL,
 });
 
+
 const initialState = {
+  username: "",
   firstName: "",
   lastName: "",
   email: "",
-  password: "",
+  hashedPassword: "",
 };
 
 const SignupPage = ({ SignupPage: signup }) => {
@@ -120,7 +122,7 @@ useEffect(() => {
               type="password"
               placeholder="Password"
               name="password"
-              value={formData.password}
+              value={formData.hashedPassword}
               onChange={handleChange}
               required
             />

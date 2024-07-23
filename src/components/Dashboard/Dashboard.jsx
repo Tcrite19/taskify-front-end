@@ -1,5 +1,4 @@
 import { Container, Row, Col } from "react-bootstrap";
-import SearchForm from "../SearchForm/SearchForm";
 import { Link } from "react-router-dom";
 import TaskList from "../TaskList/TaskList";
 import UserAccount from "../UserAccount/UserAccount";
@@ -25,7 +24,6 @@ const Dashboard = (props) => {
         </Link>
       </div>
 
-     <SearchForm className="search-form" bookTask={props.bookTask}/>
       <UserAccount account={props.account} />
       <div className="dashboard-content">
         <h2>Popular Projects</h2>

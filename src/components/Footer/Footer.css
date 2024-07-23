@@ -11,7 +11,7 @@
 /* Footer */
 .footer {
     margin-top: 100px;
-    background-color: var(--second-bg-color);
+    background-color: #e2e6fe;
     color: var(--text-color);
     text-align: center;
     display: flex;
@@ -69,7 +69,7 @@
   }
   
   .footer-copyright {
-    padding: 8px 0;
+    padding: 20px 0;
   }
   
   .footer-iconTop a {
