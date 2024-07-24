@@ -5,7 +5,7 @@ import { FaScrewdriverWrench } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const logoUrl = "../../public/img/taskify-logo.png";
+  const logoUrl = "../../images/taskify-logo.png";
 
   return (
     <>
@@ -23,9 +23,6 @@ const NavBar = () => {
               />
             </Link>
           </div>
-          {/* <Navbar.Brand href="/" className="logo">
-            TASKIFY <FaScrewdriverWrench />
-          </Navbar.Brand> */}
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">

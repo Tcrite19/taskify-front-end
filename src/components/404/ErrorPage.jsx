@@ -11,7 +11,7 @@ const ErrorPage = () => {
           Home
         </Link>
             <div className="error-page-image">
-            <img src="public/img/AdobeStock_189916326.jpeg" alt="404 error image" />
+            <img src="images/AdobeStock_189916326.jpeg" alt="404 error image" />
             </div>
       </div>
     </>
