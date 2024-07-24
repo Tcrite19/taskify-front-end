@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
 import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
-import { Navigate } from "react-router-dom";
 
 const BASE_URL = "http://localhost:3000";
 const API = axios.create({
@@ -15,35 +14,51 @@ const initialState = {
   password: "",
 };
 
-const LoginPage = ({LoginPage: login}) => {
+const LoginPage = ({ login }) => {
   const [formData, setFormData] = useState(initialState);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (login) {
-        try {
-            login(formData);
-        } catch (error) {
-            console.error("An error occurred:", error.message);
-        }
+      try {
+        login(formData);
+      } catch (error) {
+        console.error("An error occurred:", error.message);
+      }
     }
   }, [login]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    if (form && form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      if (login) {
-        login(formData);
+    const { email, password } = formData;
+    try {
+      const response = await fetch(`${BASE_URL}/users/signin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      // Ensure response is OK
+      if (!response.ok) {
+        const errorData = await response.json();
+        alert(errorData.error);
+        return;
       }
-      setFormData(initialState);
-      alert("Login Successful!");
-      navigate("/dashboard");
+
+      // Parse JSON response
+      const data = await response.json();
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        navigate("/dashboard");
+      } else {
+        alert(data.error);
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
     }
-    setValidated(true);
   };
 
   const handleChange = ({ target }) => {
@@ -52,11 +67,10 @@ const LoginPage = ({LoginPage: login}) => {
     }
   };
 
-
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await API.post("/auth/login", formData);
+      const { data } = await API.post("/users/login", formData);
       localStorage.setItem("token", data.token);
       navigate("/dashboard");
     } catch (err) {
@@ -69,9 +83,7 @@ const LoginPage = ({LoginPage: login}) => {
       <Container className="login-container">
         <Row>
           <Col>
-            <h2 className="text-center my-5 text-black">
-              Login to your account
-            </h2>
+            <h2 className="text-center my-5 text-black">Login to your account</h2>
           </Col>
         </Row>
 
@@ -103,7 +115,6 @@ const LoginPage = ({LoginPage: login}) => {
             />
           </Form.Group>
 
-          
           <Button variant="success" type="submit">
             Submit
           </Button>
@@ -114,4 +125,3 @@ const LoginPage = ({LoginPage: login}) => {
 };
 
 export default LoginPage;
-
