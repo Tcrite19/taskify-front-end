@@ -7,16 +7,19 @@ const Homepage = ({ bookTask }) => {
   return (
     <>
       <div className="homepage-container">
-        <h1 className="tagline">Quick Fixes, Expert Solutions<FaScrewdriverWrench /></h1>
+        <h1 className="tagline">
+          Quick Fixes, Expert Solutions
+          <FaScrewdriverWrench />
+        </h1>
         <h2>
           Helping you find and hire people within your profession to help with
           tasks at your home.
         </h2>
-        <h3 style={ { textDecoration: "underline"}}>Get help Today!</h3>
+        <h3 style={{ textDecoration: "underline" }}>Get help Today!</h3>
         <div className="homepage-image-container">
-
-          <img className="homepage-image"
-            src="public/img/AdobeStock_418746653.jpeg"
+          <img
+            className="homepage-image"
+            src="images/AdobeStock_418746653.jpeg"
             alt="man overwhelmed with furniture assembly instructions"
           />
         </div>
@@ -40,7 +43,7 @@ const Homepage = ({ bookTask }) => {
                 bookTask={bookTask}
               >
                 <img
-                  src="public/img/AdobeStock_189916326.jpeg"
+                  src="images/AdobeStock_189916326.jpeg"
                   alt="man assembling furniture"
                 />
               </a>
@@ -55,7 +58,7 @@ const Homepage = ({ bookTask }) => {
                 bookTask={bookTask}
               >
                 <img
-                  src="public/img/robinson-greig-HrnAxAUwle8-unsplash.jpg"
+                  src="images/robinson-greig-HrnAxAUwle8-unsplash.jpg"
                   alt="men loading a truck"
                 />
               </a>
@@ -70,7 +73,7 @@ const Homepage = ({ bookTask }) => {
                 bookTask={bookTask}
               >
                 <img
-                  src="public/img/theme-photos-Klby0nxseY8-unsplash.jpg"
+                  src="images/theme-photos-Klby0nxseY8-unsplash.jpg"
                   alt="drill"
                 />
               </a>
@@ -84,7 +87,7 @@ const Homepage = ({ bookTask }) => {
                 rel="noreferrer"
                 bookTask={bookTask}
               >
-                <img src="public/img/AdobeStock_320287361.jpeg" alt="drill" />
+                <img src="images/AdobeStock_320287361.jpeg" alt="drill" />
               </a>
               <h3 className="dashboard-img-title">Home Cleaning</h3>
               <p className="dashboard-img-desc">Projects starting at $49</p>
@@ -97,7 +100,7 @@ const Homepage = ({ bookTask }) => {
                 bookTask={bookTask}
               >
                 <img
-                  src="public/img/AdobeStock_718073342.jpeg"
+                  src="images/AdobeStock_718073342.jpeg"
                   alt="man fixing a leaky faucet"
                 />
               </a>
@@ -112,7 +115,7 @@ const Homepage = ({ bookTask }) => {
                 bookTask={bookTask}
               >
                 <img
-                  src="public/img/AdobeStock_636880936.jpeg"
+                  src="images/AdobeStock_636880936.jpeg"
                   alt="electrician fixing a circuit"
                 />
               </a>
@@ -127,7 +130,7 @@ const Homepage = ({ bookTask }) => {
                 bookTask={bookTask}
               >
                 <img
-                  src="public/img/AdobeStock_516534949.jpeg"
+                  src="images/AdobeStock_516534949.jpeg"
                   alt="men carrying a couch"
                 />
               </a>
@@ -142,7 +145,7 @@ const Homepage = ({ bookTask }) => {
                 bookTask={bookTask}
               >
                 <img
-                  src="public/img/AdobeStock_593389323.jpeg"
+                  src="images/AdobeStock_593389323.jpeg"
                   alt="gardener trimming shrubs"
                 />
               </a>
