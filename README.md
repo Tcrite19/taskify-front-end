@@ -4,6 +4,9 @@
 ## Description
 Taskify is a comprehensive task management application designed to help users organize and book various tasks efficiently. The app offers functionalities to book home repairs, yard work, painting, cleaning, junk removal, and more. Taskify was built to address the need for a user-friendly platform where users can easily manage and delegate tasks, ensuring a seamless and stress-free experience.
 
+## Deployed App:
+https://taskify-front-end-hu20.onrender.com/
+
 Logo
 ![Taskify Logo](public/images/taskify-logo.png)
 
@@ -20,14 +23,23 @@ Style Tyle and Typography
 
 1. **Clone the repository**:
    git clone https://github.com/AlejandraValdivia/taskify-front-end
-   cd taskify-frontend
- 
 
-Run the following commands:
+2. **Navigate to the repository**:
+   cd taskify-front-end
+ 
+3. **Install dependencies**:
 `npm install`
+
+4. **Set up the environment variables:**
+Create a .env file in the root directory.
+Add the following environment variables:
+VITE_BACK_END_SERVER_URL='http://localhost:3000'
+
+5. **Start development server**:
 `npm run dev`
 
-Go to http://localhost:5173/
+6. **Open your browser and navigate to:** http://localhost:3000/
+
 
 
 ## ERM (Entity Relationship Diagram)
@@ -47,7 +59,7 @@ Go to http://localhost:5173/
 - **JWT**: [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
 
 ## Technologies Used
-- **Frontend**: React, Bootstrap, Axios
+- **Frontend**: React, Bootstrap, Axios, React-Router
 - **Backend**: Node.js, Express, MongoDB, Mongoose
 - **Authentication**: JWT (JSON Web Tokens)
 - **Deployment**: Render, Netlify

@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import {
+  fetchSignup,
+  fetchLogin,
+  getUser,
+  logout,
   getTasks,
   addTask,
   deleteTask,
   updateTask,
   bookTask,
-} from "../services/taskService";
+} from "./services/apiServices.js";
 
 import NavBar from "./components/NavBar/NavBar.jsx";
 import Loading from "./components/Loading/Loading.jsx";
@@ -31,17 +35,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 const App = () => {
+  const [user, setUser] = useState(null);
   const [booked, setBooked] = useState(false);
   const [task, setTask] = useState(tasks);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchTasks = async (task) => {
+    const fetchTasks = async () => {
       try {
         setIsLoading(true);
-        const tasks = await getTasks();
-        if (data & data.results) {
-          const taskListItem = data.results.map((task) => ({
+        const taskList = await getTasks();
+        if (taskList & taskList.results) {
+          const taskListItem = taskList.results.map((task) => ({
             ...task,
             booked: false,
           }));
@@ -53,23 +58,28 @@ const App = () => {
         console.error("Error fetching tasks:", error);
       }
     };
-    fetchTasks();
-  }, []);
-
-  const fetchTasks = async (task) => {
-    try {
-      const tasks = await getTasks(task);
-      if (tasks & tasks.results) {
-        const taskListItem = tasks.results.map((task) => ({
-          ...task,
-          booked: false,
-        }));
-        setTask(taskListItem);
-      }
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
+    if (user) {
+      setTask(task.filter((task) => !task.booked));
+      setBooked(user.booked);
+      fetchTasks();
     }
-  };
+    fetchTasks();
+  }, [user]);
+
+  // const getTasks = async (task) => {
+  //   try {
+  //     const tasks = await getTasks(task);
+  //     if (tasks & tasks.results) {
+  //       const taskListItem = tasks.results.map((task) => ({
+  //         ...task,
+  //         booked: false,
+  //       }));
+  //       setTask(taskListItem);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching tasks:", error);
+  //   }
+  // };
 
   const searchTask = async (_id) => {
     try {
@@ -119,7 +129,11 @@ const App = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await API.post("/auth/login", { email, password });
+      await API.post("/users/login", { email, password });
+      login(formData);
+      setFormData(initialState);
+      alert("Login Successful!");
+      setValidated(true);
       navigate("/dashboard");
     } catch (err) {
       console.error(err);
@@ -129,21 +143,28 @@ const App = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await API.post("/signup", {
+      await API.post("/users/signup", {
         firstName,
         lastName,
         email,
-        password,
+        hashedPassword,
+        username,
       });
-      navigate("/login");
+      navigate("/users/login");
     } catch (err) {
       console.error(err);
     }
   };
 
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   navigate("/");
+  // };
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+    props.logout();
+    setUser(null);
+    props.history.push("/users/login");
   };
 
   return (
@@ -152,15 +173,15 @@ const App = () => {
         <NavBar />
         <Routes>
           <Route path="/" element={<Homepage />} />
-          <Route path="/signup-login" element={<LoginSignupPage />} />
+          <Route path="/users/signup-login" element={<LoginSignupPage />} />
 
           <Route
-            path="/signup"
-            element={<SignupPage SignupPage={handleSignup} />}
+            path="/users/signup"
+            element={<SignupPage setUser={setUser} />}
           />
           <Route
-            path="/login"
-            element={<LoginPage loginPage={handleLogin} />}
+            path="/users/login"
+            element={<LoginPage setUser={setUser} />}
           />
           <Route path="/dashboard" element={<Dashboard tasks={task} />} />
           <Route path="/tasks" element={<TaskList tasks={tasks} />} />
@@ -184,14 +205,12 @@ const App = () => {
           <Route path="/account" element={<UserAccount />} />
           <Route path="/task-form" element={<TaskForm addTask={addTask} />} />
           <Route
-            path="/logout"
-            element={<LoginPage loginPage={handleLogout} />}
+            path="/users/logout"
+            element={<LoginPage setUser={setUser} />}
           />
 
           <Route path="*" element={<ErrorPage />} />
         </Routes>
-
-      
       </div>
       <Footer />
     </>

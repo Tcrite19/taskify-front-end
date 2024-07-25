@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import '../TaskList/TaskList.css';
+import React, { useState, useEffect } from "react";
+import "../TaskList/TaskList.css";
 const TaskForm = (props) => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    fetch('/api/tasks')
+    fetch("/tasks")
       .then((response) => response.json())
       .then((data) => setTasks(data))
-      .catch((error) => console.error('Error fetching tasks:', error));
+      .catch((error) => console.error("Error fetching tasks:", error));
   }, []);
 
   const handleBookTask = async (id) => {
     try {
-      const response = await fetch('/tasks/booking', {
-        method: 'POST',
+      const response = await fetch("/tasks/booking", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ id }),
       });
@@ -29,7 +29,7 @@ const TaskForm = (props) => {
         prevTasks.map((task) => (task._id === id ? updatedTask : task))
       );
     } catch (error) {
-      console.error('Error booking task:', error);
+      console.error("Error booking task:", error);
     }
   };
 
@@ -41,10 +41,8 @@ const TaskForm = (props) => {
           <li key={task._id}>
             <h2>{task.name}</h2>
             <p>{task.description}</p>
-            <p>Booked: {task.booked ? 'Yes' : 'No'}</p>
-            <button onClick={() => handleBookTask(task._id)}>
-              Book Task
-            </button>
+            <p>Booked: {task.booked ? "Yes" : "No"}</p>
+            <button onClick={() => handleBookTask(task._id)}>Book Task</button>
           </li>
         ))}
       </ul>

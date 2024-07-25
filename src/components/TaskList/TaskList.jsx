@@ -1,32 +1,30 @@
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TaskCard from "../TaskCard/TaskCard.jsx";
 
-
-const TaskList = ( { tasks = [], handleBookTask }) => {
+const TaskList = ({ tasks = [], handleBookTask }) => {
   const [taskList, setTaskList] = useState(tasks);
   const [booked, setBooked] = useState(false);
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch('/api/tasks');
+        const response = await fetch("/tasks");
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
         const data = await response.json();
         setTaskList(data);
       } catch (error) {
-        console.error('Error fetching tasks:', error);
+        console.error("Error fetching tasks:", error);
       }
     };
 
     fetchTasks();
   }, []);
-
 
   const showList = taskList.map((task) => (
     <Card className="text-center" key={task._id}>

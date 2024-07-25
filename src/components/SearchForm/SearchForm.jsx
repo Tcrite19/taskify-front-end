@@ -1,6 +1,7 @@
 import { Container, Row, Col, Form, Button, InputGroup } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 const initialState = {
   name: "",
 };
@@ -12,7 +13,7 @@ const SearchForm = (props) => {
 
   const fetchTask = async (task) => {
     try {
-      const response = await fetch(`/api/tasks?name=${task}`);
+      const response = await fetch(`/tasks?name=${task}`);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
@@ -46,7 +47,7 @@ const SearchForm = (props) => {
       e.stopPropagation();
     } else {
       try {
-        const response = await fetch(`/api/tasks?name=${searchTask}`);
+        const response = await fetch(`/tasks?name=${searchTask}`);
         if (!response.ok) {
           throw new Error(`Error: ${response.statusText}`);
         }
