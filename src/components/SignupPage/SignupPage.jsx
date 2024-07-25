@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SignupPage.css";
-import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Navigate } from "react-router-dom";
-
-const BASE_URL = "http://localhost:3000";
-const API = axios.create({
-  baseURL: BASE_URL,
-});
-
+import { fetchSignup } from "../../services/apiServices.js";
 
 const initialState = {
   username: "",
@@ -19,35 +13,31 @@ const initialState = {
   hashedPassword: "",
 };
 
-const SignupPage = ({ SignupPage: signup }) => {
+const SignupPage = ({ setUser }) => {
   const [formData, setFormData] = useState(initialState);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
-useEffect(() => {
-    if (signup) {
-        try {
-            signup(formData);
-        } catch (error) {
-            console.error("An error occurred:", error.message);
-        }
-    }
-}, [signup]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    if (form && form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      if (signup) {
-        signup(formData);
-      }
+    try {
+      const signup = await fetchSignup(formData);
+      setUser(signup);
+      navigate("/dashboard");
+
       setFormData(initialState);
-      alert("Signup Successful!");
-      navigate("/login");
+      setValidated(true);
+
+      alert("Your account has been created!");
+      if (signup.status === 201) {
+        setStatus({ success: true, message: "Account created successfully" });
+      } else {
+        alert("Error creating account. Please try again.");
+        navigate("/users/login");
+      }
+    } catch (err) {
+      console.error(err);
     }
-    setValidated(true);
   };
 
   const handleChange = ({ target }) => {
@@ -56,20 +46,18 @@ useEffect(() => {
     }
   };
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    try {
-      await API.post("/auth/register", {
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-      navigate("/login");
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  useEffect(() => {
+    const token = localStorage.usertoken;
+
+    const decoded = jwt_decode(token);
+
+    setinfo({
+      id: decoded._id,
+      email: decoded.email,
+      username: decoded.username,
+    });
+    setValidated(true);
+  }, [formData]);
 
   return (
     <div className="signup-page container">
@@ -116,12 +104,23 @@ useEffect(() => {
             </Form.Text>
           </Form.Group>
 
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="username"
+              placeholder="Enter username"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
             <Form.Control
-              type="password"
+              type="hashedPassword"
               placeholder="Password"
-              name="password"
+              name="hashedPassword"
               value={formData.hashedPassword}
               onChange={handleChange}
               required

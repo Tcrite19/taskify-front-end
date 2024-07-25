@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const UserAccount = (props) => {
   const handleLogout = () => {
     props.logout();
-    props.history.push("/login");
+    props.history.push("/users/login");
   };
 
   return (
@@ -20,8 +20,12 @@ const UserAccount = (props) => {
                 <Card.Text>Phone: </Card.Text>
                 <Card.Text>Postal Code: </Card.Text>
                 <Card.Text>Address: </Card.Text>
-                <Link to="/logout">
-                  <Button variant="success" className="default-button" onClick={handleLogout}>
+                <Link to="/users/logout">
+                  <Button
+                    variant="success"
+                    className="default-button"
+                    onClick={handleLogout}
+                  >
                     Logout
                   </Button>
                 </Link>

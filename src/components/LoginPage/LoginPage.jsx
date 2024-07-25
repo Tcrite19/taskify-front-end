@@ -1,49 +1,49 @@
 import React, { useState, useEffect } from "react";
 import "./LoginPage.css";
-import axios from "axios";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-
-const BASE_URL = "http://localhost:3000";
-const API = axios.create({
-  baseURL: BASE_URL,
-});
+import { fetchLogin } from "../../services/apiServices.js";
 
 const initialState = {
-  email: "",
+  username: "",
   password: "",
 };
 
-const LoginPage = ({ login }) => {
+const LoginPage = ({ setUser }) => {
   const [formData, setFormData] = useState(initialState);
+  const [login, setLogin] = useState(null);
   const [validated, setValidated] = useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (login && formData.email && formData.password) {
-      try {
-        login(formData);
-      } catch (error) {
-        console.error("An error occurred:", error.message);
-      }
-    }
-  }, [login, formData]);
-
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    if (form && form.checkValidity() === false) {
-      e.stopPropagation();
-    } else {
-      try {
-        const { email, password } = formData;
-        await API.post("/auth/login", { email, password });
-        navigate("/dashboard");
-      } catch (err) {
-        console.error(err);
-      }
+    if (!form || form.checkValidity() === false) {
+      return;
     }
-    setFormData(initialState);
+
+    try {
+      const { username, password } = formData;
+      if (!username || !password) {
+        throw new Error("Username and password are required");
+      }
+
+      const user = await fetchLogin(formData);
+      if (!user) {
+        throw new Error("Invalid username or password");
+      }
+
+      setUser(user);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      let errorMessage =
+        "An error occurred while logging in. Please try again later.";
+      if (err.message) {
+        errorMessage = err.message;
+      }
+      alert(errorMessage);
+    }
   };
 
   const handleChange = ({ target }) => {
@@ -58,19 +58,19 @@ const LoginPage = ({ login }) => {
   return (
     <Container>
       <h1>Login</h1>
-      <Form noValidate validated={validated} onSubmit={handleLogin}>
-        <Form.Group controlId="formEmail">
-          <Form.Label>Email address</Form.Label>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <Form.Group controlId="formUsername">
+          <Form.Label>username address</Form.Label>
           <Form.Control
-            type="email"
-            placeholder="Enter email"
-            name="email"
-            value={formData.email}
+            type="username"
+            placeholder="Enter username"
+            name="username"
+            value={formData.username}
             onChange={handleChange}
             required
           />
           <Form.Control.Feedback type="invalid">
-            Please enter a valid email address.
+            Please enter a valid username address.
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="formPassword">

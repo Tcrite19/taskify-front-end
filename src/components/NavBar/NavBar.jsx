@@ -28,15 +28,17 @@ const NavBar = () => {
             <Nav className="me-auto">
               <Nav.Link href="/">Home</Nav.Link>
               <NavDropdown title="Welcome" id="basic-nav-dropdown">
-                <NavDropdown.Item href="/signup-login">
+                <NavDropdown.Item href="/users/signup-login">
                   Sign Up/Log In
                 </NavDropdown.Item>
                 <NavDropdown.Item href="/tasks">Services</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item href="/account">Account</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="/login">Login</NavDropdown.Item>
-                <NavDropdown.Item href="/signup">Sign-Up</NavDropdown.Item>
+                <NavDropdown.Item href="/users/login">Login</NavDropdown.Item>
+                <NavDropdown.Item href="/users/signup">
+                  Sign-Up
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
