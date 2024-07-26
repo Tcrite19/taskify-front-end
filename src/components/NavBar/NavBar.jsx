@@ -1,14 +1,14 @@
 import { Container, Nav, Navbar, NavDropdown } from "react-bootstrap";
 
-import { FaScrewdriverWrench } from "react-icons/fa6";
-
+import "./NavBar.css";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ user }) => {
   const logoUrl = "../../images/taskify-logo.png";
 
   return (
     <>
+    { user ? (
       <Navbar expand="lg" className="bg-body-tertiary">
         <Container fluid>
           <div className="logo-container">
@@ -27,6 +27,9 @@ const NavBar = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/">Sign Out</Nav.Link>
+    ) : (
+      <Nav.Link href="/">Home</Nav.Link>
               <NavDropdown title="Welcome" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/users/signup-login">
                   Sign Up/Log In
@@ -44,6 +47,7 @@ const NavBar = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+    ) : null}
     </>
   );
 };

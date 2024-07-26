@@ -1,10 +1,26 @@
 const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
 
+// Retrieve token from preferred storage method
+const token = `${localStorage.getItem("token")}`;
+
+// Define the headers, including the Authorization header with the token
+const options = {
+  headers: {
+    Authorization: `Bearer ${token}`, // Use the retrieved token
+  },
+};
+
+// Use fetch to send the request, including the token in the headers
+const response = await fetch('/protected-resource', options);
+
 export const fetchSignup = async (formData) => {
   try {
     const response = await fetch(`${BASE_URL}/users/signup`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      // headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${token}`, // Use the retrieved token
+      },
       body: JSON.stringify(formData),
     });
     if (!response.ok) {

@@ -1,0 +1,23 @@
+.landing-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f8f8f8;
+        color: #333;
+    }
+
+    .landing-container h1 {
+        font-size: 3rem;
+        margin-top: 2rem;
+    }
+
+    .landing-container img {
+        width: 100%;
+        max-width: 800px;
+        height: auto;
+        margin-bottom: 2rem;
+    }
+
+    

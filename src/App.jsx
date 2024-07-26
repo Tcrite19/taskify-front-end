@@ -16,11 +16,12 @@ import NavBar from "./components/NavBar/NavBar.jsx";
 import Loading from "./components/Loading/Loading.jsx";
 import Homepage from "./components/Homepage/Homepage.jsx";
 import LoginPage from "./components/LoginPage/LoginPage.jsx";
-import SignupPage from "./components/SignupPage/SignupPage.jsx";
+import SignupForm from "./components/SignupForm/SignupForm.jsx";
 import TaskList from "./components/TaskList/TaskList.jsx";
 import TaskCard from "./components/TaskCard/TaskCard.jsx";
 import data from "../data/data.json";
 import BookingAddress from "./components/BookingAddress/BookingAddress.jsx";
+import Landing from "./components/Landing/Landing.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import TaskForm from "./components/TaskForm/TaskForm.jsx";
 import CreditCard from "./components/CreditCard/CreditCard.jsx";
@@ -35,7 +36,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({ username: 'Shawn Doe' });
   const [booked, setBooked] = useState(false);
   const [task, setTask] = useState(tasks);
   const [isLoading, setIsLoading] = useState(true);
@@ -170,14 +171,17 @@ const App = () => {
   return (
     <>
       <div>
-        <NavBar />
+        <NavBar user={user} />
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          {user ? (
+            <Route path="/" element={<Dashboard user={user} />} />
+          ) : (
+            <Route path="/" element={<Landing />} />
+          )}
           <Route path="/users/signup-login" element={<LoginSignupPage />} />
-
           <Route
             path="/users/signup"
-            element={<SignupPage setUser={setUser} />}
+            element={<SignupForm setUser={setUser} />}
           />
           <Route
             path="/users/login"
