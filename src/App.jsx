@@ -26,7 +26,7 @@ const tasks = data;
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
-export const AuthedUserContext = createContext(null); // set the initial value of the context to null
+export const AuthedUserContext = createContext(null); 
 
 const App = () => {
   const [user, setUser] = useState(apiServices.getUser());
@@ -190,8 +190,8 @@ const App = () => {
               path="/task/:id/edit"
               element={<TaskCard tasks={task} handleAddTask={handleAddTask} />}
             />
-            <Route path="/payment" element={<CreditCard />} />
-            <Route path="/account" element={<UserAccount />} />
+            <Route path="/payment" element={<CreditCard bookTask={handleBookTask}/>} />
+            <Route path="/account" element={<UserAccount setUser={setUser}/>} />
             <Route
               path="/task-form"
               element={<TaskForm handleAddTask={handleAddTask} />}

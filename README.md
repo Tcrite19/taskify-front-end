@@ -14,7 +14,7 @@ Style Tyle and Typography
 ![Taskify Logo](public/images/taskify-style-tile.jpg)
 
 ## Getting Started
-- **Deployed App**: [Render]()
+- **Deployed App**: [https://taskify-front-end-hu20.onrender.com/]()
 
 
 ## Installation Instructions
