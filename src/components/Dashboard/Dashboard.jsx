@@ -1,17 +1,20 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import TaskList from "../TaskList/TaskList";
-import UserAccount from "../UserAccount/UserAccount";
+// import UserAccount from "../UserAccount/UserAccount";
 
 import "../TaskList/TaskList.css";
 import "./Dashboard.css";
-const Dashboard = (props) => {
+const Dashboard = ({ user }) => {
   return (
     <>
       <Link to="/dashboard">
-        <h1>Dashboard</h1>
+        <h1>Welcome, {user.username}</h1>
       </Link>
 
+      <p>
+        This is the dashboard page where you can manage your tasks and account.
+      </p>
       <div className="dashboard-links">
         <Link className="dashboard-link" to="/">
           Home
@@ -24,7 +27,7 @@ const Dashboard = (props) => {
         </Link>
       </div>
 
-      <UserAccount account={props.account} />
+      {/* <UserAccount user={user} /> */}
       <div className="dashboard-content">
         <h2>Popular Projects</h2>
         <div id="dashboard-img-gallery">
@@ -92,7 +95,7 @@ const Dashboard = (props) => {
         </div>
       </div>
 
-      <TaskList tasks={props.tasks} onClick={props.bookTask} />
+      <TaskList user={user} />
     </>
   );
 };
