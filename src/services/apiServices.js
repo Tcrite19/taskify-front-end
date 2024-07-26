@@ -1,117 +1,65 @@
-const BASE_URL = `${import.meta.env.VITE_BACK_END_SERVER_URL}`;
+const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
-// Retrieve token from preferred storage method
-const token = `${localStorage.getItem("token")}`;
-
-// Define the headers, including the Authorization header with the token
-const options = {
-  headers: {
-    Authorization: `Bearer ${token}`, // Use the retrieved token
-  },
-};
-
-// Use fetch to send the request, including the token in the headers
-const response = await fetch('/protected-resource', options);
-
-export const fetchSignup = async (formData) => {
+export const signup = async (user) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/signup`, {
-      method: "POST",
-      // headers: { "Content-Type": "application/json" },
-      headers: {
-        Authorization: `Bearer ${token}`, // Use the retrieved token
-      },
-      body: JSON.stringify(formData),
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.statusText}`);
-    }
-    const data = await response.json();
+    const res = await fetch(`${BACKEND_URL}/users/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    })
+    const json = await res.json()
 
-    if (!data || !data.token) {
-      throw new Error("Invalid signup response");
+    if (json.token) {
+      localStorage.setItem('token', json.token); // add this line to store the JWT token in localStorage
+
+      const user = JSON.parse(atob(json.token.split('.')[1]));
+
+      return user
     }
-    localStorage.getItem("token", data.token);
-    localStorage.setItem("token", data.token);
-    const userString = atob(data.token.split(".")[1]);
-    if (!userString) {
-      throw new Error("Invalid token");
+    if (json.err) {
+      throw new Error(json.err)
     }
-    const user = JSON.parse(userString);
-    if (!user) {
-      throw new Error("Invalid user");
-    }
-    return user;
   } catch (err) {
-    console.error("Error fetching signup:", err);
-    throw err;
+    console.log(err)
+    throw err
   }
-};
+}
 
-export const fetchLogin = async (formData) => {
+
+export const signin = async (user) => {
   try {
-    const response = await fetch(`${BASE_URL}/users/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-    const data = await response.json();
+    const res = await fetch(`${BACKEND_URL}/users/signin`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user),
+    })
+    const json = await res.json()
 
-    if (!data || !data.token) {
-      throw new Error("Invalid login credentials");
+    if (json.token) {
+      localStorage.setItem('token', json.token); // add this line to store the JWT token in localStorage
+
+      const user = JSON.parse(atob(json.token.split('.')[1]));
+
+      return user
     }
-    if (data.error) {
-      throw new Error(data.error);
+    if (json.err) {
+      throw new Error(json.err)
     }
-
-    const token = data.token;
-    if (!token) {
-      throw new Error("No token provided");
-    }
-
-    localStorage.setItem("token", token);
-
-    const userString = atob(token.split(".")[1]);
-    if (!userString) {
-      throw new Error("Invalid token");
-    }
-
-    const user = JSON.parse(userString);
-    if (!user) {
-      throw new Error("Invalid user");
-    }
-
-    return user;
   } catch (err) {
-    console.log(err);
-    throw err;
+    console.log(err)
+    throw err
   }
-};
+}
 
-export const signin = (user) => {
-  localStorage.setItem("token", user.token);
-};
-
-export const signup = (user) => {
-  localStorage.setItem("token", user.token);
-};
-
-export const logout = () => {
-  localStorage.removeItem("token");
-};
-
-export const getUser = () => {
-  const token = localStorage.getItem("token");
+export const getUser = () =>  {
+  const token = localStorage.getItem('token');
   if (!token) return null;
-
-  const decodedToken = JSON.parse(atob(token.split(".")[1]));
-  const user = {
-    username: decodedToken.username,
-    id: decodedToken.id,
-    email: decodedToken.email,
-  };
-
+  const user = JSON.parse(atob(token.split('.')[1]));
   return user;
+}
+
+export const signout = () => {
+  localStorage.removeItem('token');
 };
 
 /* API CALLS FOR TASKS */
@@ -119,7 +67,7 @@ export const getUser = () => {
 export const getTasks = async (task) => {
   try {
     const response = await fetch(
-      `${BASE_URL}/tasks?name=${task}` || BASE_URL + "/tasks"
+      `${BACKEND_URL}/tasks?name=${task}` || BACKEND_URL + "/tasks"
     );
     const tasks = await response.json();
     return tasks;
@@ -131,7 +79,7 @@ export const getTasks = async (task) => {
 
 export const getTask = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/${id}`);
+    const response = await fetch(`${BACKEND_URL}/${id}`);
     const task = await response.json();
     return task;
   } catch (error) {
@@ -141,7 +89,7 @@ export const getTask = async (id) => {
 };
 
 export const addTask = async (task) => {
-  const response = await fetch(BASE_URL, {
+  const response = await fetch(BACKEND_URL + "/tasks", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -153,7 +101,7 @@ export const addTask = async (task) => {
 };
 
 export const deleteTask = async (id) => {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await fetch(`${BACKEND_URL}/${id}`, {
     method: "DELETE",
   });
   const deletedTask = await response.json();
@@ -161,7 +109,7 @@ export const deleteTask = async (id) => {
 };
 
 export const updateTask = async (id, updatedTask) => {
-  const response = await fetch(`${BASE_URL}/${id}`, {
+  const response = await fetch(`${BACKEND_URL}/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -186,7 +134,7 @@ export const bookTask = (task) => {
 export const searchTask = async (task) => {
   try {
     const queryString = `?name=${task}`;
-    const response = await fetch(BASE_URL + queryString);
+    const response = await fetch(BACKEND_URL + queryString);
     const tasks = await response.json();
     return tasks;
   } catch (error) {
