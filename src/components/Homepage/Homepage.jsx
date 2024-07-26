@@ -8,7 +8,7 @@ const Homepage = ({ bookTask }) => {
     <>
       <div className="homepage-container">
         <h1 className="tagline">
-          Quick Fixes, Expert Solutions
+          Quick Fixes, Expert Solutions 
           <FaScrewdriverWrench />
         </h1>
         <h2>

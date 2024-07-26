@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./SignupForm.css";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchSignup } from "../../services/apiServices.js";
+import * as authService from "../../services/apiServices.js";
 
 const SignupForm = (props) => {
   const navigate = useNavigate();
@@ -30,10 +30,11 @@ const SignupForm = (props) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      props.setUser(formData);
+      const newUserResponse = await authService.signup(formData);
+      props.setUser(newUserResponse.user);
       navigate("/");
     } catch (error) {
-      updateMessage(err.message);
+      updateMessage(error.message);
     }
   };
 
@@ -64,47 +65,50 @@ const SignupForm = (props) => {
             </Col>
           </Row>
           <Form noValidate className="signup-form" onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicFirstName">
               <Form.Label>First Name</Form.Label>
               <Form.Control
                 type="text"
-                id="firstName"
                 placeholder="Enter First Name"
                 name="firstName"
                 value={firstName}
                 onChange={handleChange}
                 required
               />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicLastName">
               <Form.Label>Last Name</Form.Label>
               <Form.Control
                 type="text"
-                id="lastName"
                 placeholder="Enter lastName"
                 name="lastName"
                 value={lastName}
                 onChange={handleChange}
                 required
               />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
-                id="email"
                 placeholder="Enter email"
                 name="email"
                 value={email}
                 onChange={handleChange}
                 required
               />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicText">
               <Form.Text className="text-muted">
                 We'll never share your email with anyone else.
               </Form.Text>
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="formBasicUsername">
               <Form.Label>Username</Form.Label>
               <Form.Control
                 type="text"
-                id="username"
                 placeholder="Enter username"
                 name="username"
                 value={username}
@@ -116,8 +120,6 @@ const SignupForm = (props) => {
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
-                id="password"
-                placeholder="Password"
                 name="password"
                 value={password}
                 onChange={handleChange}

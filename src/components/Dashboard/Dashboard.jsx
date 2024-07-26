@@ -1,11 +1,15 @@
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import TaskList from "../TaskList/TaskList";
+import { useContext } from "react";
+import { AuthedUserContext } from "../../App";
 // import UserAccount from "../UserAccount/UserAccount";
 
 import "../TaskList/TaskList.css";
 import "./Dashboard.css";
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
+  const user = useContext(AuthedUserContext);
+
   return (
     <>
       <Link to="/dashboard">

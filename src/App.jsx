@@ -1,21 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { Route, Routes } from "react-router-dom";
-import {
-  fetchSignup,
-  fetchLogin,
-  getUser,
-  logout,
-  getTasks,
-  addTask,
-  deleteTask,
-  updateTask,
-  bookTask,
-} from "./services/apiServices.js";
+import * as apiServices from "../src/services/apiServices"; 
 
 import NavBar from "./components/NavBar/NavBar.jsx";
 import Loading from "./components/Loading/Loading.jsx";
 import Homepage from "./components/Homepage/Homepage.jsx";
-import LoginPage from "./components/LoginPage/LoginPage.jsx";
+import SigninForm from "./components/SigninForm/SigninForm.jsx";
 import SignupForm from "./components/SignupForm/SignupForm.jsx";
 import TaskList from "./components/TaskList/TaskList.jsx";
 import TaskCard from "./components/TaskCard/TaskCard.jsx";
@@ -25,18 +15,21 @@ import Landing from "./components/Landing/Landing.jsx";
 import Dashboard from "./components/Dashboard/Dashboard.jsx";
 import TaskForm from "./components/TaskForm/TaskForm.jsx";
 import CreditCard from "./components/CreditCard/CreditCard.jsx";
-import LoginSignupPage from "./components/LoginSignupPage/LoginSignupPage.jsx";
+import SigninSignupPage from "./components/SiginSignupPage/SiginSignupPage.jsx";
 import UserAccount from "./components/UserAccount/UserAccount.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import ErrorPage from "./components/404/ErrorPage.jsx";
+import Signout from "./components/Signout";
 
 const tasks = data;
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
+export const AuthedUserContext = createContext(null); // set the initial value of the context to null
+
 const App = () => {
-  const [user, setUser] = useState({ username: 'Shawn Doe' });
+  const [user, setUser] = useState(apiServices.getUser());
   const [booked, setBooked] = useState(false);
   const [task, setTask] = useState(tasks);
   const [isLoading, setIsLoading] = useState(true);
@@ -45,14 +38,11 @@ const App = () => {
     const fetchTasks = async () => {
       try {
         setIsLoading(true);
-        const taskList = await getTasks();
-        if (taskList & taskList.results) {
-          const taskListItem = taskList.results.map((task) => ({
-            ...task,
-            booked: false,
-          }));
-          setTask(taskList);
-        }
+        const taskList = await apiServices.getTasks();
+        const tasks = taskList.results.map((task) => ({
+          ...task,
+          booked: false,
+        }));
         setTask(tasks);
         setIsLoading(false);
       } catch (error) {
@@ -67,20 +57,20 @@ const App = () => {
     fetchTasks();
   }, [user]);
 
-  // const getTasks = async (task) => {
-  //   try {
-  //     const tasks = await getTasks(task);
-  //     if (tasks & tasks.results) {
-  //       const taskListItem = tasks.results.map((task) => ({
-  //         ...task,
-  //         booked: false,
-  //       }));
-  //       setTask(taskListItem);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching tasks:", error);
-  //   }
-  // };
+  const getTasks = async (task) => {
+    try {
+      const tasks = await getTasks(task);
+      if (tasks & tasks.results) {
+        const taskListItem = tasks.results.map((task) => ({
+          ...task,
+          booked: false,
+        }));
+        setTask(taskListItem);
+      }
+    } catch (error) {
+      console.error("Error fetching tasks:", error);
+    }
+  };
 
   const searchTask = async (_id) => {
     try {
@@ -130,10 +120,10 @@ const App = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await API.post("/users/login", { email, password });
+      await API.post("/users/signin", { email, password });
       login(formData);
       setFormData(initialState);
-      alert("Login Successful!");
+      alert("Signin Successful!");
       setValidated(true);
       navigate("/dashboard");
     } catch (err) {
@@ -151,73 +141,69 @@ const App = () => {
         hashedPassword,
         username,
       });
-      navigate("/users/login");
+      navigate("/users/signin");
     } catch (err) {
       console.error(err);
     }
   };
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem("token");
-  //   navigate("/");
-  // };
-
-  const handleLogout = () => {
-    props.logout();
+  const handleSignout = () => {
+    authService.signout();
     setUser(null);
-    props.history.push("/users/login");
   };
 
   return (
-    <>
-      <div>
-        <NavBar user={user} />
-        <Routes>
-          {user ? (
-            <Route path="/" element={<Dashboard user={user} />} />
-          ) : (
-            <Route path="/" element={<Landing />} />
-          )}
-          <Route path="/users/signup-login" element={<LoginSignupPage />} />
-          <Route
-            path="/users/signup"
-            element={<SignupForm setUser={setUser} />}
-          />
-          <Route
-            path="/users/login"
-            element={<LoginPage setUser={setUser} />}
-          />
-          <Route path="/dashboard" element={<Dashboard tasks={task} />} />
-          <Route path="/tasks" element={<TaskList tasks={tasks} />} />
-          <Route
-            path="/task/:id"
-            element={<TaskCard tasks={task} bookTask={bookTask} />}
-          />
-          <Route
-            path="/task/:id/book"
-            element={<BookingAddress bookTask={handleBookTask} />}
-          />
-          <Route path="/task/new" element={<TaskCard tasks={task} />} />
-          <Route
-            path="/task/:id/edit"
-            element={<TaskCard tasks={task} bookTask={bookTask} />}
-          />
-          <Route
-            path="/payment"
-            element={<CreditCard bookTask={handleBookTask} />}
-          />
-          <Route path="/account" element={<UserAccount />} />
-          <Route path="/task-form" element={<TaskForm addTask={addTask} />} />
-          <Route
-            path="/users/logout"
-            element={<LoginPage setUser={setUser} />}
-          />
+    <AuthedUserContext.Provider value={user}>
+      <>
+        <div>
+          <NavBar user={user} handleSignout={handleSignout} />
+          <Routes>
+            {user ? (
+              <Route path="/" element={<Dashboard user={user} />} />
+            ) : (
+              <Route path="/" element={<Landing />} />
+            )}
+            <Route
+              path="/users/signup-login"
+              element={<SigninSignupPage setUser={setUser} />}
+            />
+            <Route
+              path="/users/signup"
+              element={<SignupForm setUser={setUser} />}
+            />
+            <Route
+              path="/users/signin"
+              element={<SigninForm setUser={setUser} />}
+            />
+            <Route path="/dashboard" element={<Dashboard tasks={task} />} />
+            <Route path="/tasks" element={<TaskList tasks={tasks} />} />
+            <Route path="/task/:id" element={<TaskCard tasks={task} />} />
+            <Route
+              path="/task/:id/book"
+              element={<BookingAddress bookTask={handleBookTask} />}
+            />
+            <Route
+              path="/task/new"
+              element={<TaskCard tasks={task} handleAddTask={handleAddTask} />}
+            />
+            <Route
+              path="/task/:id/edit"
+              element={<TaskCard tasks={task} handleAddTask={handleAddTask} />}
+            />
+            <Route path="/payment" element={<CreditCard />} />
+            <Route path="/account" element={<UserAccount />} />
+            <Route
+              path="/task-form"
+              element={<TaskForm handleAddTask={handleAddTask} />}
+            />
+            <Route path="/users/signout" element={<Signout />} />
 
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </div>
-      <Footer />
-    </>
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </div>
+        <Footer />
+      </>
+    </AuthedUserContext.Provider>
   );
 };
 
